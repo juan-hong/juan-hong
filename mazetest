@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning (disable:4996)
+#define MAX_STACK 100
+#define MAX_MAZE_SIZE 30
+
+typedef struct {
+	int row;
+	int col;
+	int dir;
+} element;
+element stack[MAX_STACK];
+
+typedef struct {
+	int vert;
+	int horiz;
+} offset;
+offset move[4];
+
+int n_row, n_col;
+int s_row, s_col;
+int f_row, f_col;
+int maze[MAX_MAZE_SIZE][MAX_MAZE_SIZE]; // 30 * 30
+int mark[MAX_MAZE_SIZE][MAX_MAZE_SIZE]; // 30 * 30
+
+int main(void)
+{
+	FILE* maze1 = fopen("maze1.txt", "r");
+	if (!maze1) {
+		puts("파일을 열 수 없습니다");
+		exit(1);
+	}
+
+	fscanf(maze1, "%d %d ", &n_row, &n_col);
+
+	for (int i = 0; i < n_row + 2; i++) {
+		for (int j = 0; j < n_col + 2; j++) {
+			if (i == 0)
+				maze[i][j] = 1;
+			else if (i == n_row + 1)
+				maze[i][j] = 1;
+			else if (j == 0)
+				maze[i][j] = 1;
+			else if (j == n_col + 1)
+				maze[i][j];
+			else
+				fscanf(maze1, "%d ", &maze[i][j]);
+		}
+	}
+	fscanf(maze1, "%d %d %d %d ", &s_row, &s_col, &f_row, &f_col);
+
+}
+
+void path(void)
+{
+	
+}
+
+void print_maze(void)
+{
+	for (int i = 0; i < n_row + 2; i++) {
+		for (int j = 0; j < n_col + 2; j++) {
+			printf("%d ", maze[i][j]);
+		}
+		puts(" ");
+	}
+}
