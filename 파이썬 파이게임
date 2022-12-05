@@ -4,7 +4,7 @@ import random
 ###################################################################
 ###################################################################
 def restart():
-    global isGameOver, score
+    global isGameOver, score #게임 오버 변수는 0이면 게임이 계속 진행되고 1이 된다면 게임을 종료한다 # 점수는 시간이 지날 수록 자동으로 올라간다
     isGameOver = False
     score = 0
     for i in range(len(star)):
