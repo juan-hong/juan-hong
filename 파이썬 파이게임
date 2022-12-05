@@ -3,43 +3,49 @@ import random
 
 ###################################################################
 ###################################################################
-def restart():
-    global isGameOver, score #게임 오버 변수는 0이면 게임이 계속 진행되고 1이 된다면 게임을 종료한다 # 점수는 시간이 지날 수록 자동으로 올라간다
+def restart(): #게임이 끝나지 않는이상 게임을 계속 실행시킨다
+    global isGameOver, score
     isGameOver = False
     score = 0
     for i in range(len(star)):
         recStar[i].y = -1    
 ###################################################################
 ###################################################################
-def eventProcess():
+def eventProcess(): # 게임에 움직임을 담당한다. 키보드로 부터 정보를 받아드림
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-
-            if event.key == pygame.K_LEFT:
+                pygame.quit() # 부딪히면 끝
+            if event.key == pygame.K_SPACE:
+                move.x = 0
+                move.y = 0
+            if event.key == pygame.K_LEFT: # 키보드 좌클릭
                 move.x = -1
-            if event.key == pygame.K_RIGHT:
+                move.y = 0
+            if event.key == pygame.K_RIGHT:# 키보드 우클릭
                 move.x = 1
-            if event.key == pygame.K_UP:
+                move.y = 0
+            if event.key == pygame.K_UP:   # 키보드 위클릭
                 move.y = -1
-            if event.key == pygame.K_DOWN:
+                move.x = 0
+            if event.key == pygame.K_DOWN: # 키보드 밑클릭
                 move.y = 1
+                move.x = 0
             if event.key == pygame.K_r:
                 restart()
 ###################################################################
 ###################################################################
-def movePlayer():
+def movePlayer(): # 키보드로부터 받은 정보를 토대로 게임 캐릭터를 움직인다
     if not isGameOver:
-        recPlayer.x += move.x
-        recPlayer.y += move.y
-    if recPlayer.x < 0:
+        recPlayer.x += move.x # 입력받은 x좌표대로 계속해서 캐릭터를 움직임
+        recPlayer.y += move.y # 입력받은 y좌표대로 계속해서 캐릭터를 움직임
+    if recPlayer.x < 0: # 만약 왼쪽 벽과 만난다면 x좌표의 움직임을 멈춤
         recPlayer.x = 0
-    if recPlayer.x > SCREEN_WIDTH-recPlayer.width:
+    if recPlayer.x > SCREEN_WIDTH-recPlayer.width: # 만약 오른쪽 벽과 만난다면 x좌표의 움직임을 멈춤
         recPlayer.x = SCREEN_WIDTH-recPlayer.width
-    if recPlayer.y < 0:
+    if recPlayer.y < 0: # 만약 아래쪽 벽과 만난다면 y 좌표를 멈춤
         recPlayer.y = 0
-    if recPlayer.y > SCREEN_HEIGHT-recPlayer.height:
+    if recPlayer.y > SCREEN_HEIGHT-recPlayer.height: # 만약 위쪽 벽과 만난다면 y좌표를 멈춤 하지만 가능성 매우 희박함
         recPlayer.y = SCREEN_HEIGHT-recPlayer.height        
     SCREEN.blit(player, recPlayer)
 ###################################################################
@@ -53,7 +59,7 @@ def timeDelay500ms():
     return False
     
 def makeStar(): ## 별을 만드는 함수
-    if isGameOver:
+    if isGameOver: # 게임이 끝났다면 더이상 별을 만들지 않는다
         return
     if timeDelay500ms():
         idex = random.randint(0, len(star)-1)
@@ -61,10 +67,10 @@ def makeStar(): ## 별을 만드는 함수
             recStar[idex].x = random.randint(0, SCREEN_WIDTH)
             recStar[idex].y = 0
 
-def moveStar():
-    makeStar()
+def moveStar(): # 별들을 움직여주는 함수
+    makeStar() # 가장 먼저 별들을 생성한다
     for i in range(len(star)):
-        if recStar[i].y == -1:
+        if recStar[i].y == -1:  # 별들을 아래로 떨어트린다
             continue
         if not isGameOver:
             recStar[i].y += 1
@@ -73,9 +79,9 @@ def moveStar():
         SCREEN.blit(star[i], recStar[i])
 ###################################################################
 ###################################################################
-def CheckCollision():   
+def CheckCollision():   #캐릭터가 별에 충돌하는지 계속 확인해주는 함수
     global score, isGameOver
-    if isGameOver:
+    if isGameOver: #충돌했다면 끝낸다
         return
     for rec in recStar:
         if rec.y == -1:
@@ -85,7 +91,7 @@ def CheckCollision():
             and rec.left < recPlayer.right \
             and recPlayer.left < rec.right:
             print('충돌')
-            isGameOver = True
+            isGameOver = True #게임을 끝낸다
             break
     score += 1
 ###################################################################
@@ -98,7 +104,7 @@ def blinking():
         toggle = ~toggle    
     return toggle
 
-def setText():
+def setText(): # 게임의 시작과 끝에 메세지를 출력해준다
     mFont = pygame.font.SysFont("arial",20, True, False)
     SCREEN.blit(mFont.render(
         f'score : {score}', True, 'green'), (10, 10, 0, 0))
@@ -112,41 +118,41 @@ def setText():
 ###################################################################
 #1.변수초기화
 isActive = True
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 900
-move = pygame.rect.Rect(0,0,0,0)
+SCREEN_WIDTH = 600 # 게임판의 가로크기
+SCREEN_HEIGHT = 900 # 게임판의 세로크기
+move = pygame.rect.Rect(0,0,0,0) # x,y와 음,양으로 움직임을 받아드린다
 time_delay_500ms = 0
 time_dealy_4sec = 0
 toggle = False
-score = 0
-isGameOver = False
+score = 0 # 점수
+isGameOver = False # True가 되면 게임을 끝낸다
 
 #2.스크린생성
-pygame.init()
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('홍주안의 달 피하기 게임')
+pygame.init() ###라이브러리를 사용하기위한 첫 동작### 중요하다고 한다
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #스크린의 크기를 정하는 줄
+pygame.display.set_caption('홍주안의 달 피하기 게임') #제목 정하는 줄
 
 #3. player 생성
-player = pygame.image.load('player.png')
-player = pygame.transform.scale(player,(20,30))
-recPlayer = player.get_rect()
-recPlayer.centerx = (SCREEN_WIDTH/2)
-recPlayer.centery = (SCREEN_HEIGHT/2)
+player = pygame.image.load('player.png') #플레이어의 이미지를 로드한다.
+player = pygame.transform.scale(player,(20,30)) # 플레이어의 크기
+recPlayer = player.get_rect() # 플레이어의 행동
+recPlayer.centerx = (SCREEN_WIDTH/2) #플레이어의 시작위치
+recPlayer.centery = (SCREEN_HEIGHT/2) # 플레이어의 시작위치
 #4. 유성 생성
-star = [pygame.image.load('star.png') for i in range(40)]
+star = [pygame.image.load('star.png') for i in range(40)] # 유성의 개수를 정함
 recStar = [None for i in range(len(star))]
 for i in range(len(star)):
     star[i] = pygame.transform.scale(star[i], (20, 20))
     recStar[i] = star[i].get_rect()
-    recStar[i].y = -1
+    recStar[i].y = -1 # 별들을 아래로 내린다
     
 #5. 기타
 clock = pygame.time.Clock()
 
 #####반복####
 while isActive:
-    #1.화면 지움
-    SCREEN.fill((255,255,255))
+    #1.흰 화면으로 채움
+    SCREEN.fill((255,255,255)) # 255,255,255는 흰 색상의 숫자번호이다
     #2.이벤트처리
     eventProcess()
     #3.플레이어 이동
@@ -158,6 +164,6 @@ while isActive:
     #6.text업데이트
     setText()
     #7.화면 갱신
-    pygame.display.flip()
+    pygame.display.flip() #스크린 여는것을 유지시켜줌   
     clock.tick(100)
-#####반복####
+#####반복#####
