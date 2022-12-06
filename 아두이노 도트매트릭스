@@ -163,3 +163,31 @@ for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++) 
       leds[i][j] = patterns[pattern][i][j];   
 }
+
+
+
+######################################
+
+void display() {
+  
+  digitalWrite(cols[col], HIGH);  // 이전 열의 LED 모두 OFF
+
+  // 다음 표시할 열 인덱스 지정
+  col = ++col % 8;
+
+
+  // leds 배열 값이 1인 위치 LED ON
+  // rows는 HIGH, cols는 LOW이면 LED ON
+  
+  for (int row = 0; row < 8; row++) {
+    if (leds[row][col] == 1) {
+      digitalWrite(rows[row], HIGH);
+    }
+    else {
+      digitalWrite(rows[row], LOW);
+    }
+  }
+  digitalWrite(cols[col], LOW);
+}
+
+#########################################
