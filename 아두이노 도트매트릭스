@@ -1,5 +1,5 @@
 #include <FrequencyTimer2.h>
-#define SESOR A0
+#define SESOR A5
 #define A { \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
