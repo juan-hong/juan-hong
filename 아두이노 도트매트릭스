@@ -1,5 +1,5 @@
 #include <FrequencyTimer2.h>
-#define SESOR A5
+#define SESOR A4
 #define A { \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
     {0, 0, 0, 0, 0, 0, 0, 0}, \
@@ -121,12 +121,15 @@ void setup() {
   // leds 출력을 위한 setOnOverflow 함수 (interrupt 함수)
   // display함수가 interrupt routine이 됨
 
-  setPattern(pattern); // 초기 출력 패턴 지정
+  setPattern(0); // 초기 출력 패턴 지정
   
 }
+double val = 0;
 
 void loop() {
-int val = analogRead(SESOR);
+val = analogRead(SESOR);
+val = val / 1024 * 100;
+Serial.println(val);
 // 최소값은 1로 하고 최대값은 100으로 잡는다
 if (val < 11)
   setPattern(0);
@@ -146,7 +149,7 @@ else if (val < 88)
   setPattern(7);
 else if (val < 99)
   setPattern(8);
-delay(100);
+delay(10);
 }
 
 
@@ -163,10 +166,7 @@ for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++) 
       leds[i][j] = patterns[pattern][i][j];   
 }
-
-
-
-######################################
+//
 
 void display() {
   
@@ -189,5 +189,4 @@ void display() {
   }
   digitalWrite(cols[col], LOW);
 }
-
-#########################################
+//
