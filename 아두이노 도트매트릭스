@@ -109,7 +109,6 @@ byte patterns[numPatterns][8][8] = { A, B, C, D, E, F, G, H, I };   // 위에서
 void setup() {
   int i;
   Serial.begin(9600);
-  
   // 1~16번까지의 핀을 출력으로 설정
   for (i = 1; i <= 16; i++) {
     pinMode(pins[i], OUTPUT);
@@ -129,7 +128,9 @@ double val = 0;
 void loop() {
 val = analogRead(SESOR);
 val = val / 1024 * 100;
+val=abs((val-80)/60*100);
 Serial.println(val);
+
 // 최소값은 1로 하고 최대값은 100으로 잡는다
 if (val < 11)
   setPattern(0);
@@ -149,7 +150,7 @@ else if (val < 88)
   setPattern(7);
 else if (val < 99)
   setPattern(8);
-delay(10);
+delay(100);
 }
 
 
@@ -189,4 +190,3 @@ void display() {
   }
   digitalWrite(cols[col], LOW);
 }
-//
