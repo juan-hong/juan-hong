@@ -68,7 +68,7 @@
 ```markdown
 # 인라인 코드
 변수명은 `count`로 지정합니다.
-'''
+```
 # 코드 블록
 ```cpp
 #include <iostream>
