@@ -98,17 +98,6 @@
 # 인라인 코드
 변수명은 `count`로 지정합니다.
 ```
-
-
-#####코드블럭
-#include <iostream>
-int main() {
-    std::cout << "Hello World";
-    return 0;
-}
-
-
-
 ```cpp
 #include <iostream>
 //cpp 코드블럭
