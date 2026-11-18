@@ -1,1 +1,1 @@
-![Byeolji](https://github.com/juan-hong/byeolji-app/byeolji_icon_1024.png)
+[![Byeolji](https://raw.githubusercontent.com/juan-hong/Byeolji/main/icon.png)](https://byeolji.app)
